@@ -22,12 +22,26 @@ const GameBoard = (() => {
         else
             return false;
 
-    }
+    };
     const getState = () => {
-        if((board[0]==board[1]==board[2]) || (board[0]==board[1]==board[2]) || (board[0]==board[1]==board[2])) return `${board[0]} wins`;
-        if(board[0]==board[1]==board[2]) return `${board[0]} wins`;
-        if(board[0]==board[1]==board[2]) return `${board[0]} wins`;
+        if(((board[0]==board[1] && board[1]==board[2]) || (board[0]==board[3]&&board[3]==board[6]) || (board[0]==board[4]&&board[4]==board[8])) && board[0]!= 0) return `${board[0]} wins`;
+        if((board[3]==board[4] && board[4]==board[5]) && board[3]!= 0) return `${board[3]} wins`;
+        if((board[6]==board[7] && board[7]==board[8]) && board[6]!= 0) return `${board[6]} wins`;
+        if((board[1]==board[4] && board[4]==board[7]) && board[1]!= 0) return `${board[1]} wins`;
+        if((board[2]==board[5] && board[5]==board[8]) && board[2]!= 0) return `${board[2]} wins`;
+        if(board.includes(0)) return "active";
+        if(!board.includes(0)) return "draw";
 
+
+    };
+    const resetBoard = () => {board = [0,0,0,0,0,0,0,0,0]}
+    return {getBoard, addMove, getState}
+})();
+
+const DisplayController = ((root, action) =>{
+    const drawBoard = () => {
+        
     }
-    return {getBoard, addMove}
+
+    return {drawBoard};
 })();

@@ -1,0 +1,39 @@
+body{
+    background-color: #ACC196;
+    color: #14080E;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    display: flex;
+    padding-top: 60px;
+    align-items: center;
+    flex-direction: column;
+    height: 50vh;
+    gap:100px
+}
+
+.board{
+    width: 50%;
+    display: grid;
+    grid-template-columns: 100px 100px 100px ;
+    grid-auto-rows: auto;
+    justify-content: center;
+}
+
+.board > div{
+    width: 100px;
+    height: 100px;
+    font-size: xx-large;
+    border: 1px solid #49475B;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+}
+
+.board > div:hover{
+    box-shadow: inset 2px 2px black;
+    
+}
+
+.full:hover{
+    background-color:rgb(134, 7, 7);
+}

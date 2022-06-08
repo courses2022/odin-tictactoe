@@ -38,9 +38,20 @@ const GameBoard = (() => {
     return {getBoard, addMove, getState}
 })();
 
-const DisplayController = ((root, action) =>{
-    const drawBoard = () => {
+const DisplayController = ((selector = ".board", action) =>{
+    const root = document.querySelector(selector);
+    const drawBoard = (board=[" "," ","x","x","o","o","o","x","x"]) => {
+        root.innerHTML = "";
+        board.forEach((x, index) => {
+            const newDiv = document.createElement("div");
+            const newContent = document.createTextNode(`${x}`);
+            newDiv.appendChild(newContent);
+            newDiv.setAttribute("onclick", `action(${index})`);
+            if(x!= " ")newDiv.classList.add("full");
+            root.appendChild(newDiv);
+        });
         
+
     }
 
     return {drawBoard};

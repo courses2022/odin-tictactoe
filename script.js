@@ -56,3 +56,13 @@ const DisplayController = ((selector = ".board", action) =>{
 
     return {drawBoard};
 })();
+
+const GameController = (() => {
+    const initialiseGame = () => {
+        //temporatily
+        DisplayController.drawBoard();
+    }
+    return {initialiseGame};
+})();
+
+GameController.initialiseGame();

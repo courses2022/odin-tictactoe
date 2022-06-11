@@ -5,7 +5,8 @@ const player = name => {
     const incrementScore = () => score+=1;
     const getScore = () => score;
     const getName = () =>  name;
-    return{getName, incrementScore, getScore};
+    const resetScore = () => score = 0;
+    return{getName, incrementScore, getScore, resetScore};
 }
 
 const Player1 = player("Player 1");
@@ -35,7 +36,7 @@ const GameBoard = (() => {
 
     };
     const resetBoard = () => {board = [0,0,0,0,0,0,0,0,0]}
-    return {getBoard, addMove, getState}
+    return {getBoard, addMove, getState, resetBoard}
 })();
 
 const DisplayController = ((selector = ".board", action) =>{
@@ -58,11 +59,34 @@ const DisplayController = ((selector = ".board", action) =>{
 })();
 
 const GameController = (() => {
+    const notification = document.querySelector(".notification")
     const initialiseGame = () => {
         //temporatily
         DisplayController.drawBoard();
+        playGame();
     }
-    return {initialiseGame};
+
+    const newGame = () => {
+        GameBoard.resetBoard();
+        Player1.resetScore();
+        Player2.resetScore();
+    }
+
+    const playGame = () => {
+
+        while(GameBoard.getState() == "active"){
+            setTimeout(function timer() {
+            //Get player1 move
+            notification.innerHTML = "Player 1's Move";
+            // Check game state draw or win
+            //Get player2 move
+            // Check game state draw or win
+              }, 3000);
+            
+            break;
+        }
+    }
+    return {initialiseGame, newGame};
 })();
 
 GameController.initialiseGame();

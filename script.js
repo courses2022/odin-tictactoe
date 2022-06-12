@@ -1,16 +1,15 @@
 console.log("Hi there");
 
-const player = name => {
+const player = (name, move) => {
     let score =0;
     const incrementScore = () => score+=1;
     const getScore = () => score;
     const getName = () =>  name;
+    const getMove = () => move;
     const resetScore = () => score = 0;
     return{getName, incrementScore, getScore, resetScore};
 }
 
-const Player1 = player("Player 1");
-const Player2 = player("Player 2");
 
 const GameBoard = (() => {
     const board = [0,0,0,0,0,0,0,0,0];
@@ -39,7 +38,8 @@ const GameBoard = (() => {
     return {getBoard, addMove, getState, resetBoard}
 })();
 
-const DisplayController = ((selector = ".board", action) =>{
+
+const DisplayController = ((selector = ".board") =>{
     const root = document.querySelector(selector);
     const drawBoard = (board=[" "," ","x","x","o","o","o","x","x"]) => {
         root.innerHTML = "";
@@ -47,7 +47,7 @@ const DisplayController = ((selector = ".board", action) =>{
             const newDiv = document.createElement("div");
             const newContent = document.createTextNode(`${x}`);
             newDiv.appendChild(newContent);
-            newDiv.setAttribute("onclick", `action(${index})`);
+            newDiv.setAttribute("onclick", `GameController.playMove(${index})`);
             if(x!= " ")newDiv.classList.add("full");
             root.appendChild(newDiv);
         });
@@ -59,11 +59,26 @@ const DisplayController = ((selector = ".board", action) =>{
 })();
 
 const GameController = (() => {
-    const notification = document.querySelector(".notification")
+    const notification = document.querySelector(".notification");
+    
+    const Player1 = player("Player 1", "X");
+    const Player2 = player("Player 2", "O");
+
+    let currentPlayer = Player1;
+
     const initialiseGame = () => {
-        //temporatily
+        
+        currentPlayer = Player1;
         DisplayController.drawBoard();
-        playGame();
+        
+    }
+
+    const swapPlayers = () => {
+        if(currentPlayer == Player1){
+            currentPlayer = Player2;
+        }else{
+            currentPlayer = Player1;
+        }
     }
 
     const newGame = () => {
@@ -72,21 +87,13 @@ const GameController = (() => {
         Player2.resetScore();
     }
 
-    const playGame = () => {
+    const playMove = (i) => {
+        console.log(`${i} was clicked`);
 
-        while(GameBoard.getState() == "active"){
-            setTimeout(function timer() {
-            //Get player1 move
-            notification.innerHTML = "Player 1's Move";
-            // Check game state draw or win
-            //Get player2 move
-            // Check game state draw or win
-              }, 3000);
-            
-            break;
-        }
     }
-    return {initialiseGame, newGame};
+    return {initialiseGame, newGame, playMove};
 })();
 
 GameController.initialiseGame();
+
+

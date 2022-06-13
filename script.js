@@ -29,6 +29,7 @@ const GameBoard = (() => {
         if((board[6]==board[7] && board[7]==board[8]) && board[6]!= "") return `${board[6]} wins`;
         if((board[1]==board[4] && board[4]==board[7]) && board[1]!= "") return `${board[1]} wins`;
         if((board[2]==board[5] && board[5]==board[8]) && board[2]!= "") return `${board[2]} wins`;
+        if((board[2]==board[4] && board[4]==board[6]) && board[2]!= "") return `${board[2]} wins`;
         if(board.includes("")) return "active";
         if(!board.includes("")) return "draw";
 
@@ -61,6 +62,7 @@ const DisplayController = ((selector = ".board") =>{
 const GameController = (() => {
     const notification = document.querySelector(".notification");
     const newRound = document.querySelector(".newRound");
+    const score = document.querySelector(".gameInfo");
     
     const Player1 = player("Player 1", "X");
     const Player2 = player("Player 2", "O");
@@ -73,6 +75,10 @@ const GameController = (() => {
         GameBoard.resetBoard();
         DisplayController.drawBoard(GameBoard.getBoard());
         newRound.style.display = "none";
+        notification.innerHTML = "";
+        Player1.resetScore();
+        Player2.resetScore();
+        score.innerHTML = `Player 1 <span>${Player1.getScore()}</span> : <span>${Player2.getScore()}</span> Player 2`
     }
 
     const swapPlayers = () => {
@@ -83,14 +89,14 @@ const GameController = (() => {
         }
     }
 
-    const newGame = () => {
+    const newRoundListener = () => {
         GameBoard.resetBoard();
-        Player1.resetScore();
-        Player2.resetScore();
+        DisplayController.drawBoard(GameBoard.getBoard());
+        newRound.style.display = "none";
+        notification.innerHTML = "";
     }
 
     const playMove = (i) => {
-        console.log(`${i} was clicked`);
         if(GameBoard.getState() == "active"){
             GameBoard.addMove(i, currentPlayer.getMove())
             DisplayController.drawBoard(GameBoard.getBoard());
@@ -101,8 +107,10 @@ const GameController = (() => {
             if(GameBoard.getState() == "draw"){
                 notification.innerHTML = `It's a draw`;    
             }
-            else{
+            if(GameBoard.getState() != "active"){
                 notification.innerHTML = `${currentPlayer.getName()} wins`;
+                currentPlayer.incrementScore();
+                score.innerHTML = `Player 1 <span>${Player1.getScore()}</span> : <span>${Player2.getScore()}</span> Player 2`
             }
             newRound.style.display = "inline";
         }else{
@@ -110,7 +118,7 @@ const GameController = (() => {
         }
 
     }
-    return {initialiseGame, newGame, playMove};
+    return {initialiseGame, newRoundListener, playMove};
 })();
 
 GameController.initialiseGame();
